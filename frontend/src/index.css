@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--accent);
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--text-secondary);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-foreground: #FFFFFF;
+  --color-destructive: #ef4444;
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--accent);
+  --color-chart-1: var(--accent);
+  --color-chart-2: var(--hive-yellow);
+
+  /* Brand Colors explicitly */
+  --color-hive-purple: var(--hive-purple);
+  --color-hive-purple-light: var(--hive-purple-light);
+  --color-hive-purple-dark: var(--hive-purple-dark);
+  --color-hive-yellow: var(--hive-yellow);
+  --color-hive-bg-dark: var(--hive-bg-dark);
+  --color-hive-surface-dark: var(--hive-surface-dark);
+  --color-hive-bg-light: var(--hive-bg-light);
+  --color-hive-surface-light: var(--hive-surface-light);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --radius: 0.5rem;
+  
+  --hive-purple: #7B2FBE;
+  --hive-purple-light: #A855F7;
+  --hive-purple-dark: #5B21B6;
+  --hive-yellow: #F59E0B;
+  --hive-bg-dark: #0D0D14;
+  --hive-surface-dark: #13131F;
+  --hive-bg-light: #FFFFFF;
+  --hive-surface-light: #F4F4FC;
+
+  /* Basic Light Theme Mapping */
+  --bg: #FFFFFF;
+  --surface: #F4F4FC;
+  --text-primary: #1A1A2E;
+  --text-secondary: #6B6B8A;
+  --accent: #7B2FBE;
+  --accent-hover: #5B21B6;
+  --border: #E5E5F0;
+}
+
+.dark {
+  /* Dark Theme Mapping (Default) */
+  --bg: #0D0D14;
+  --surface: #13131F;
+  --text-primary: #E8E8FF;
+  --text-secondary: #9494B8;
+  --accent: #7B2FBE;
+  --accent-hover: #A855F7;
+  --border: #2A2A3E;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body, html {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+}
+
+.font-code, code, pre {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Glassmorphism utilities for room/session cards */
+.glass-panel {
+  background: rgba(123,47,190,0.08); 
+  backdrop-filter: blur(12px); 
+  border: 1px solid rgba(168,85,247,0.2);
+}
+
+.glass-nav {
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.dark .glass-nav {
+  border-bottom: 1px solid var(--hive-purple);
+}
+
+/* Kinetic reveals */
+.reveal-text {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-[--hive-purple] to-[--hive-purple-light];
+}
+
+/* Animated glow on the code editor panel */
+@keyframes hive-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(123,47,190,0.4); }
+  50% { box-shadow: 0 0 20px rgba(168,85,247,0.7); }
+}
+
+.editor-glow {
+  animation: hive-glow 3s infinite ease-in-out;
+  border: 1px solid var(--hive-purple);
+}
+
+/* Basic hover scale logic added globally to buttons or explicit classes */
+.hover-scale {
+  transition: transform 150ms ease;
+}
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Remove overrides that conflict with theme */
+html, body, #root {
+  min-height: 100vh;
+  width: 100%;
+}

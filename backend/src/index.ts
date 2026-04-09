@@ -13,13 +13,14 @@ import aiRoute from "./routes/ai.js";
 import executeRouter from "./routes/execute.js";
 
 import path from "node:path";
-
+import { fileURLToPath } from "node:url";
 
 const app = express();
 const server = createServer(app);
 const mongoUrl = process.env.DATABASE_URL;
 
-const _dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const io = new Server(server, {
   cors: {
@@ -126,9 +127,9 @@ dbConnection(mongoUrl)
     console.log(err);
   });
 
-app.use(express.static(path.join(_dirname, 'frontend/dist')));
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use((_, res) => {
-  res.sendFile(path.join(_dirname, 'frontend/dist/index.html'));
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
 
 server.listen(process.env.PORT, () => {

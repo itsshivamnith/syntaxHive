@@ -4,14 +4,10 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import type { Message } from "../SideBar";
 
-const isCodeBlock = (text: string) => {
-  return (
-    text.includes("```") ||
-    text.includes(";") ||
-    text.includes("{") ||
-    text.includes("}")
-  );
-};
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 
 const Ai = ({
   messages,
@@ -58,25 +54,52 @@ const Ai = ({
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex ${
-              msg.role === "user" ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
           >
             <div
-              className={`w-fit max-w-[90%] p-2 rounded-lg shadow ${
-                msg.role === "user"
+              className={`w-fit max-w-[90%] p-2 rounded-lg shadow ${msg.role === "user"
                   ? "bg-[#2f2f31] text-white"
                   : "bg-gray-800 text-gray-100"
-              }`}
+                }`}
             >
               {msg.role === "ai" && msg.text === "..." ? (
                 <span className="animate-pulse">...</span>
-              ) : msg.role === "ai" && isCodeBlock(msg.text) ? (
-                <pre className="bg-black p-3 rounded-md overflow-x-auto whitespace-pre-wrap text-xs font-mono">
-                  {msg.text.replace(/```/g, "")}
-                </pre>
               ) : (
-                <p>{msg.text}</p>
+                <ReactMarkdown
+                  components={{
+                    code({ inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      const codeString = String(children).replace(/\n$/, "");
+
+                      return !inline && match ? (
+                        <div className="relative group">
+                          <button
+                            className="absolute top-2 right-2 text-xs bg-gray-600 hover:bg-gray-500 text-white px-2 py-1 rounded z-10"
+                            onClick={() => navigator.clipboard.writeText(codeString)}
+                          >
+                            Copy
+                          </button>
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            // @ts-expect-error Types mismatch in renderer
+                            {...props}
+                          >
+                            {codeString}
+                          </SyntaxHighlighter>
+                        </div>
+                      ) : (
+                        <code className="bg-gray-800 px-1 rounded text-sm" {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {msg.text}
+                </ReactMarkdown>
               )}
             </div>
           </div>

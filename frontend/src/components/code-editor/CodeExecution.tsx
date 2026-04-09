@@ -18,16 +18,6 @@ const CodeExecution = ({ code, language, roomId }: CodeExecutionProps) => {
   const [sharedIsPending, setSharedIsPending] = useState(false);
   const [sharedInput, setSharedInput] = useState("");
 
-  const languageToId: Record<string, number> = {
-    javascript: 102,
-    python: 109,
-    cpp: 105,
-    java: 91,
-    typescript: 101,
-    csharp: 51,
-    php: 98,
-  };
-
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setSharedInput(newValue)
@@ -35,26 +25,26 @@ const CodeExecution = ({ code, language, roomId }: CodeExecutionProps) => {
   }
 
   const runCode = () => {
-    const id = languageToId[language];
     setSharedError("");
     setSharedOutput([]);
     mutate(
       {
-        id,
+        language,
         sourceCode: code,
         input: sharedInput,
       },
       {
         onSuccess: (data) => {
           const output = data?.stdout ? data.stdout.split("\n") : [];
-          const error = data?.stderr || data?.compile_output || data?.message || (data?.status?.id !== 3 && data?.status?.description ? data.status.description : "");
+          const error  = data?.error || data?.stderr || "";
 
           setSharedOutput(output);
           setSharedError(error);
 
           socket.emit("outputSync", roomId, output);
-          socket.emit("errorSync", roomId, error);
+          socket.emit("errorSync",  roomId, error);
         },
+
         onError: (error) => {
           setSharedError(error.message);
           setSharedOutput([]);

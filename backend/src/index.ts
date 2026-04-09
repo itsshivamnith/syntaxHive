@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import dbConnection from "./connection.js";
 import userRoute from "./routes/user.js";
 import cookieParser from "cookie-parser";
@@ -8,9 +10,10 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import roomRoute from "./routes/room.js";
 import aiRoute from "./routes/ai.js";
+import executeRouter from "./routes/execute.js";
+
 import path from "node:path";
 
-dotenv.config();
 
 const app = express();
 const server = createServer(app);
@@ -109,6 +112,7 @@ app.use(cookieParser());
 app.use("/api/auth", userRoute);
 app.use("/api/room", roomRoute);
 app.use("/api/ai", aiRoute);
+app.use("/api", executeRouter);
 
 if (!mongoUrl) {
   throw new Error("DATABASE_URL is not defined in .env");
@@ -127,8 +131,6 @@ app.use((_, res) => {
   res.sendFile(path.join(_dirname, 'frontend/dist/index.html'));
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });

@@ -87,9 +87,8 @@ const Editor = ({
         />
       </div>
       <div
-        className={`flex flex-col flex-shrink-0 w-1/3 min-w-[250px] bg-[var(--hive-surface-dark)] ${
-          language === "html" ? "p-0" : "p-2"
-        } h-full min-h-0`}
+        className={`flex flex-col flex-shrink-0 w-1/3 min-w-[250px] bg-[var(--hive-surface-dark)] ${language === "html" ? "p-0" : "p-2"
+          } h-full min-h-0`}
       >
         {language === "html" ? (
           <HtmlCodeExecution code={sharedCode} />

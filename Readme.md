@@ -1,23 +1,23 @@
-# CodeFlow
+# SyntaxHive
 
-CodeFlow is a real-time, AI-powered collaborative code editor designed to streamline development workflows. Write, debug, and build projects seamlessly, whether you're working solo or with a team across the globe.
+SyntaxHive is a real-time, AI-powered collaborative code editor designed to streamline development workflows. Write, debug, and build projects seamlessly, whether you're working solo or with a team across the globe.
 
 ## Features
 
 - **Real-time Collaboration**: Code together with multiple participants in a shared room, with changes synced instantly via WebSockets.
-- **AI Assistant**: Integrated AI chat powered by Google Gemini to help debug, explain concepts, or generate code snippets.
+- **AI Assistant**: Integrated AI chat powered by **Groq** and the ultra-fast Llama 3 models. Gets code formatting, markdown rendering, and syntax highlighting built directly into the UI!
 - **Multi-language Support**: A versatile editor supporting a wide range of popular programming languages including JavaScript, Python, C++, Java, TypeScript, and more.
-- **In-browser Code Execution**: Run your code directly in the browser and see the output, powered by the Judge0 API.
+- **In-browser Code Execution**: Run your code directly in the browser and see the output, powered by free tier endpoints for **Judge0 CE**.
 - **Live HTML/CSS/JS Preview**: Get instant visual feedback for web development with a live-rendering preview pane.
 - **Secure User Authentication**: JWT-based authentication system for user sign-up, sign-in, and session management.
-- **Collaborative Rooms**: Easily create new coding rooms or join existing ones with a unique Room ID.
+- **Premium Interface & Resizable Workspace**: Features an ultra-premium "Pulse" dark/light mode UI and a draggable, fluid workspace (using `react-resizable-panels`) separating your AI chat, Monaco Editor, and execution outputs.
 - **Code Export**: Save your work by exporting your code files directly from the editor.
 
 ## Tech Stack
 
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Shadcn/ui, Monaco Editor, React Query, Zustand, Socket.io-client, GSAP
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Shadcn/ui, Monaco Editor, React Query, Zustand, Socket.io-client, React-Markdown
 - **Backend**: Node.js, Express, TypeScript, MongoDB, Mongoose, Socket.io, JSON Web Tokens (JWT)
-- **APIs**: Google Gemini, Judge0
+- **APIs**: Groq AI (Llama 3), Judge0 CE
 
 ## Project Structure
 
@@ -59,7 +59,7 @@ Follow these instructions to get a copy of the project up and running on your lo
       DATABASE_URL=<your_mongodb_connection_string>
       FRONTEND_URL=http://localhost:5173
       JWT_SECRET=<your_secure_jwt_secret>
-      GEMINI_API_KEY=<your_google_gemini_api_key>
+      GROQ_API_KEY=<your_groq_api_key>
       ```
     - Start the backend server:
       ```sh
@@ -67,7 +67,7 @@ Follow these instructions to get a copy of the project up and running on your lo
       ```
 
 3.  **Set up the Frontend:**
-    - Navigate to the frontend directory from the root folder:
+    - Navigate to the frontend directory:
       ```sh
       cd frontend
       ```
@@ -75,10 +75,9 @@ Follow these instructions to get a copy of the project up and running on your lo
       ```sh
       npm install
       ```
-    - Create a `.env` file in the `frontend` directory and add the following environment variables. You'll need an API key from [RapidAPI (Judge0 CE)](https://rapidapi.com/judge0-official/api/judge0-ce).
+    - Create a `.env` file in the `frontend` directory and add the following:
       ```env
       VITE_BASE_URL=http://localhost:8000
-      VITE_EXECUTION_API_KEY=<your_judge0_api_key>
       ```
     - Start the frontend development server:
       ```sh

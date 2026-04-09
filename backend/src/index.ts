@@ -127,9 +127,8 @@ dbConnection(mongoUrl)
     console.log(err);
   });
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
-app.use((_, res) => {
-  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+app.get("/", (req, res) => {
+  res.send("API Running");
 });
 
 server.listen(process.env.PORT, () => {
